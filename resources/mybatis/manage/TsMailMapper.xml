@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TsMailMapper" >
+
+<insert id="insert" parameterType="pd" useGeneratedKeys="true" keyProperty="F_ID">
+    insert into  ${tableName}
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fSendId != null" >
+        F_SEND_ID,
+      </if>
+      <if test="fSend != null" >
+        F_SEND,
+      </if>
+      <if test="fReceivedId != null" >
+        F_RECEIVED_ID,
+      </if>
+      <if test="fReceived != null" >
+        F_RECEIVED,
+      </if>
+      <if test="fSubject != null" >
+        F_SUBJECT,
+      </if>
+      <if test="fContent != null" >
+        F_CONTENT,
+      </if>
+      <if test="fSendTime != null" >
+        F_SEND_TIME,
+      </if>
+      <if test="fAttachmentId != null" >
+        F_ATTACHMENT_ID,
+      </if>
+      <if test="fAttachment != null" >
+        F_ATTACHMENT,
+      </if>
+      <if test="fAttachmentUrl != null" >
+        F_ATTACHMENT_URL,
+      </if>
+      <if test="fFolder != null" >
+        F_FOLDER,
+      </if>
+      <if test="fStatus != null" >
+        F_STATUS,
+      </if>
+      <if test="fType != null" >
+        F_TYPE,
+      </if>
+      <if test="fReceipt != null" >
+        F_RECEIPT,
+      </if>
+      <if test="fSms != null" >
+        F_SMS,
+      </if>
+      <if test="fSmsMsg != null" >
+        F_SMS_MSG,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      
+      <if test="fSendId != null" >
+        #{fSendId},
+      </if>
+      <if test="fSend != null" >
+        #{fSend},
+      </if>
+      <if test="fReceivedId != null" >
+        #{fReceivedId},
+      </if>
+      <if test="fReceived != null" >
+        #{fReceived},
+      </if>
+      <if test="fSubject != null" >
+        #{fSubject},
+      </if>
+      <if test="fContent != null" >
+        #{fContent},
+      </if>
+      <if test="fSendTime != null" >
+        #{fSendTime},
+      </if>
+      <if test="fAttachmentId != null" >
+        #{fAttachmentId},
+      </if>
+      <if test="fAttachment != null" >
+        #{fAttachment},
+      </if>
+      <if test="fAttachmentUrl != null" >
+        #{fAttachmentUrl},
+      </if>
+      <if test="fFolder != null" >
+        #{fFolder},
+      </if>
+      <if test="fStatus != null" >
+        #{fStatus},
+      </if>
+      <if test="fType != null" >
+        #{fType},
+      </if>
+      <if test="fReceipt != null" >
+        #{fReceipt},
+      </if>
+      <if test="fSms != null" >
+        #{fSms},
+      </if>
+      <if test="fSmsMsg != null" >
+        #{fSmsMsg},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="pd" >
+    update ${tableName}
+    <set >
+      <if test="fSendId != null" >
+        F_SEND_ID = #{fSendId,jdbcType=VARCHAR},
+      </if>
+      <if test="fSend != null" >
+        F_SEND = #{fSend,jdbcType=VARCHAR},
+      </if>
+      <if test="fReceivedId != null" >
+        F_RECEIVED_ID = #{fReceivedId,jdbcType=VARCHAR},
+      </if>
+      <if test="fReceived != null" >
+        F_RECEIVED = #{fReceived,jdbcType=VARCHAR},
+      </if>
+      <if test="fSubject != null" >
+        F_SUBJECT = #{fSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="fContent != null" >
+        F_CONTENT = #{fContent,jdbcType=VARCHAR},
+      </if>
+      <if test="fSendTime != null" >
+        F_SEND_TIME = #{fSendTime,jdbcType=VARCHAR},
+      </if>
+      <if test="fAttachmentId != null" >
+        F_ATTACHMENT_ID = #{fAttachmentId,jdbcType=VARCHAR},
+      </if>
+      <if test="fAttachment != null" >
+        F_ATTACHMENT = #{fAttachment,jdbcType=VARCHAR},
+      </if>
+      <if test="fAttachmentUrl != null" >
+        F_ATTACHMENT_URL = #{fAttachmentUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fFolder != null" >
+        F_FOLDER = #{fFolder,jdbcType=VARCHAR},
+      </if>
+      <if test="fStatus != null" >
+        F_STATUS = #{fStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="fType != null" >
+        F_TYPE = #{fType,jdbcType=VARCHAR},
+      </if>
+      <if test="fReceipt != null" >
+        F_RECEIPT = #{fReceipt,jdbcType=VARCHAR},
+      </if>
+      <if test="fSms != null" >
+        F_SMS = #{fSms,jdbcType=VARCHAR},
+      </if>
+      <if test="fSmsMsg != null" >
+        F_SMS_MSG = #{fSmsMsg,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </update>
+
+<!-- ==============================动态建表操作《开始》============================================ -->
+
+<!-- 删除用户邮箱表 -->
+<update id="dropTsMail" parameterType="pd">
+   DROP TABLE IF EXISTS ${tableName};
+</update>
+
+<!-- 创建用户邮箱表 -->
+  <update id="createTsMail" parameterType="pd">
+
+CREATE TABLE ${tableName}
+(
+   F_ID                 INT(11) NOT NULL AUTO_INCREMENT,
+   F_SEND_ID            VARCHAR(50) NOT NULL DEFAULT '' COMMENT '（发送人id）',
+   F_SEND               VARCHAR(50) NOT NULL DEFAULT '' COMMENT '（发件人）',
+   F_RECEIVED_ID        VARCHAR(50) NOT NULL DEFAULT '' COMMENT '（接收人id）',
+   F_RECEIVED           VARCHAR(50) NOT NULL DEFAULT '' COMMENT '（接收人）',
+   F_SUBJECT            VARCHAR(500) NOT NULL DEFAULT '' COMMENT '（主题）',
+   F_CONTENT            VARCHAR(5000) NOT NULL DEFAULT '' COMMENT '（内容）',
+   F_SEND_TIME          VARCHAR(50) NOT NULL DEFAULT '' COMMENT '（发送时间）',
+   F_ATTACHMENT_ID      VARCHAR(50) NOT NULL DEFAULT '' COMMENT '（附件编号）',
+   F_ATTACHMENT         VARCHAR(500) NOT NULL DEFAULT '' COMMENT '（附件名称）',
+   F_ATTACHMENT_URL     LONGBLOB COMMENT '附件内容',
+   F_FOLDER             VARCHAR(50) NOT NULL DEFAULT '' COMMENT '（文件夹分类）',
+   F_STATUS             VARCHAR(50) NOT NULL DEFAULT '' COMMENT '（邮件状态）',
+   F_TYPE               VARCHAR(50) NOT NULL DEFAULT '' COMMENT '（邮件类别）：个人邮件、部门邮件',
+   F_RECEIPT            VARCHAR(10) NOT NULL DEFAULT '' COMMENT '（是否需要回执）',
+   F_SMS                VARCHAR(10) NOT NULL DEFAULT '' COMMENT '（是否短信提醒）',
+   F_SMS_MSG            VARCHAR(500) NOT NULL DEFAULT '' COMMENT '（短信内容）',
+   PRIMARY KEY (F_ID)
+);
+
+  </update>
+  
+  
+  <!-- 查看邮箱空间 -->
+  <select id="selectTableDataSize" parameterType="pd" resultType="pd">
+  SELECT CONCAT(TRUNCATE(SUM(data_length)/1024/1024/1024,4),'') AS data_size,
+  CONCAT(TRUNCATE(SUM(max_data_length)/1024/1024,2),'MB') AS max_data_size,
+  CONCAT(TRUNCATE(SUM(data_free)/1024/1024,2),'MB') AS data_free,
+  CONCAT(TRUNCATE(SUM(index_length)/1024/1024,2),'MB') AS index_size
+  FROM information_schema.tables WHERE TABLE_NAME = #{tableName};
+  </select>
+  
+  
+  <!-- ============================动态建表操作《结束》=================================================== -->
+  
+ <!-- 删除不属于附件邮件的附件 -->
+  <delete id="deleteOutAttachment" parameterType="pd">
+  delete  from  ${tableName}  where f_id not in (${fNewIds}) and f_id in (${fOldIds})
+  </delete>
+  
+  <!-- 查询我的已发送中的附件 -->
+  <select id="selectMailAttachment" resultType="pd" parameterType="pd">
+    select * from ${tableName} where f_id in (${fIds})
+  </select>
+  
+  <!-- 删除邮件的附件 -->
+  <delete id="deleteByIds" parameterType="pd">
+   delete  from  ${tableName}  where f_id  in (${fIds})
+  </delete>
+  
+  <!-- 收件箱 -->
+  <select id="recMail" parameterType="page" resultType="pd">
+     select * from ${pd.tableName}
+     where 
+     F_FOLDER ='收件箱'
+     ORDER BY F_ID DESC
+  </select>
+  
+  <!-- 我的未读邮件 -->
+  <select id="countNoReadMail" parameterType="pd" resultType="int">
+  select count(1) from ${tableName} where  F_FOLDER ='收件箱' and f_status = '未阅'
+  </select>
+  
+  <!-- 我的 已发送 邮件 -->
+  <select id="selectMySent" parameterType="page" resultType="pd">
+    select * from ${pd.tableName}
+     where 
+     F_FOLDER ='已发送'
+     ORDER BY F_ID DESC
+  </select>
+  
+  <!-- 我的 草稿箱 邮件 -->
+  <select id="selectMyDrafts" parameterType="page" resultType="pd">
+    select * from ${pd.tableName}
+     where 
+     F_FOLDER ='草稿箱'
+     ORDER BY F_ID DESC
+  </select>
+  
+  <!-- 我的 已删除 邮件 -->
+  <select id="selectMyDelete" parameterType="page" resultType="pd">
+    select * from ${pd.tableName}
+     where 
+     F_FOLDER ='已删除'
+     ORDER BY F_ID DESC
+  </select>
+  
+  <!-- 保留删除 邮件 -->
+  <update id="reservedDelete" parameterType="pd">
+  update ${tableName}  set F_FOLDER = '已删除' where F_ID  in (${fIds})
+  </update>
+  
+  <!-- 彻底 删除 邮件 -->
+  <delete id="completeDelete" parameterType="pd">
+  delete from  ${tableName}  where F_ID  in (${fIds})
+  </delete>
+  
+  
+  <!-- 查看邮件时，修改邮件状态为已阅 -->
+  <update id="updateMailStatus" parameterType="pd">
+   update ${tableName}  set F_STATUS = '已阅' where F_ID = #{fId}
+  </update>
+  
+  <!-- 查找邮件 by id-->
+  <select id="selectMailById" parameterType="pd" resultType="pd">
+    select * from ${tableName}  where F_ID = #{fId}
+  </select>
+  
+  <!-- 查找20位用户 like -->
+  <select id="searchPersonTop20" parameterType="pd" resultType="pd">
+  select * from sys_user where F_CNAME like '%${fKey}%' limit 20
+  </select>
+  
+  <!-- 搜索通讯录人员 -->
+  <select id="searchPerson" parameterType="page" resultType="pd">
+    select * from sys_user where F_CNAME like '%${pd.fKey}%' or F_DEPT like '%${pd.fKey}%' order by F_ID DESC
+  </select>
+  
+</mapper>

@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="SysDeptMapper" >
+
+  <resultMap id="BaseResultMap" type="dept" >
+    <id column="F_ID" property="fId" jdbcType="INTEGER" />
+    <result column="F_PID" property="fPid" jdbcType="INTEGER" />
+    <result column="F_NAME" property="fName" jdbcType="VARCHAR" />
+    <result column="F_SORT" property="fSort" jdbcType="INTEGER" />
+    <result column="F_ADDRESS" property="fAddress" jdbcType="VARCHAR" />
+    <result column="F_PHONE" property="fPhone" jdbcType="VARCHAR" />
+    <result column="F_LEVEL" property="fLevel" jdbcType="INTEGER" />
+    <result column="F_DUTY_PERSON" property="fDutyPerson" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select *  from sys_dept
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 查找by 部门名称 -->
+  <select id="selectByDeptName" parameterType="pd" resultMap="BaseResultMap">
+    select * from sys_dept  where F_NAME  in (${fDeptName}) 
+  </select>
+  
+  
+  <!-- 查询出需要考核的部门 -->
+  <select id="selectExamDept" resultMap="BaseResultMap" parameterType="pd">
+   select * from sys_dept where f_level =3 and F_NAME like '%局' and F_NAME !='直属公安分局' order by F_SORT DESC,F_ID ASC
+  </select>
+  
+  
+  <!-- 查询 出父部门的 层级 -->
+  <select id="findParentLevel" parameterType="pd" resultType="Integer">
+   select f_level from sys_dept where f_id = #{fPid}
+  </select>
+  
+  <!-- 关联查找 -->
+  <select id="relateSelectById" parameterType="pd" resultType="pd">
+  select *,
+      (SELECT F_NAME from sys_dept s where d.F_PID = s.F_ID) as F_PNAME
+      from
+   sys_dept d where d.F_ID = #{fId}
+  </select>
+  
+  <delete id="deleteByIds" parameterType="pd" >
+    delete from sys_dept
+    where F_ID in (${fIds})
+  </delete>
+  
+  <!-- 删除子级部门 -->
+  <delete id="deleteSubByIds" parameterType="pd">
+  delete from sys_dept where F_PID in (${fIds})
+  </delete>
+
+  <select id="selectByModel" parameterType="dept" resultMap="BaseResultMap">
+  select * from sys_dept order by F_SORT DESC,F_ID DESC
+  </select>
+  
+  <!-- 查找通知、通报需要签收的部门 -->
+  <select id="selectMsgRecDept" parameterType="pd" resultMap="BaseResultMap">
+   select * from sys_dept where F_LEVEL = 3  order by F_SORT DESC,F_ID ASC
+  </select>
+  
+  <!-- 查询出 需要上报重点工作内容的部门 -->
+  <select id="selectTaskDept" parameterType="pd" resultMap="BaseResultMap">
+   select * from sys_dept where F_LEVEL = 2  order by F_SORT DESC,F_ID DESC
+  </select>
+  
+  <select id="selectTreeData" resultType="pd">
+  select 
+  F_ID AS id,F_PID AS pId,F_NAME AS name 
+  from sys_dept 
+  order by F_SORT DESC,F_ID DESC
+  </select>
+
+<!-- 查找部门下的责任人 -->
+<select id="findDutyPersonByDept" parameterType="pd" resultType="String">
+  select F_DUTY_PERSON from sys_dept where F_NAME = #{fDept} limit 1
+</select>
+
+  <insert id="insert" parameterType="dept" useGeneratedKeys="true" keyProperty="fId">
+    insert into sys_dept
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fPid != null" >
+        F_PID,
+      </if>
+      <if test="fName != null" >
+        F_NAME,
+      </if>
+      <if test="fSort != null" >
+        F_SORT,
+      </if>
+      <if test="fAddress != null" >
+        F_ADDRESS,
+      </if>
+      <if test="fPhone != null" >
+        F_PHONE,
+      </if>
+      <if test="fLevel != null" >
+        F_LEVEL,
+      </if>
+      <if test="fDutyPerson != null" >
+        F_DUTY_PERSON,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fPid != null" >
+        #{fPid,jdbcType=INTEGER},
+      </if>
+      <if test="fName != null" >
+        #{fName,jdbcType=VARCHAR},
+      </if>
+      <if test="fSort != null" >
+        #{fSort,jdbcType=INTEGER},
+      </if>
+      <if test="fAddress != null" >
+        #{fAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="fPhone != null" >
+        #{fPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="fLevel != null" >
+        #{fLevel,jdbcType=INTEGER},
+      </if>
+      <if test="fDutyPerson != null" >
+        #{fDutyPerson,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="dept" >
+    update sys_dept
+    <set >
+      <if test="fPid != null" >
+        F_PID = #{fPid,jdbcType=INTEGER},
+      </if>
+      <if test="fName != null" >
+        F_NAME = #{fName,jdbcType=VARCHAR},
+      </if>
+      <if test="fSort != null" >
+        F_SORT = #{fSort,jdbcType=INTEGER},
+      </if>
+      <if test="fAddress != null" >
+        F_ADDRESS = #{fAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="fPhone != null" >
+        F_PHONE = #{fPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="fLevel != null" >
+        F_LEVEL = #{fLevel,jdbcType=INTEGER},
+      </if>
+      <if test="fDutyPerson != null" >
+        F_DUTY_PERSON = #{fDutyPerson,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

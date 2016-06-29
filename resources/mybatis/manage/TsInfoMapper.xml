@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TsInfoMapper" >
+
+  <resultMap id="BaseResultMap" type="TsInfo" >
+    <id column="F_ID" property="fId" jdbcType="INTEGER" />
+    <result column="F_NAME" property="fName" jdbcType="VARCHAR" />
+    <result column="F_CONTENT" property="fContent" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from ts_info
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByIds" parameterType="pd" >
+    delete from ts_info
+    where F_ID in (${fIds})
+  </delete>
+  
+  <!-- 查找信息by name -->
+  <select id="findInfoByName" parameterType="pd" resultMap="BaseResultMap">
+   select * from ts_info  where F_NAME = #{fName} limit 1
+  </select>
+  
+  <!-- 查找信息by name -->
+  <select id="findStringInfoByName" parameterType="pd" resultType="String" >
+   select F_CONTENT from ts_info  where F_NAME = #{fName} limit 1
+  </select>
+  
+  
+  <insert id="insert" parameterType="TsInfo" useGeneratedKeys="true" keyProperty="fId">
+    insert into ts_info
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      
+      <if test="fName != null" >
+        F_NAME,
+      </if>
+      <if test="fContent != null" >
+        F_CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+     
+      <if test="fName != null" >
+        #{fName,jdbcType=VARCHAR},
+      </if>
+      <if test="fContent != null" >
+        #{fContent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="TsInfo" >
+    update ts_info
+    <set >
+      <if test="fName != null" >
+        F_NAME = #{fName,jdbcType=VARCHAR},
+      </if>
+      <if test="fContent != null" >
+        F_CONTENT = #{fContent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

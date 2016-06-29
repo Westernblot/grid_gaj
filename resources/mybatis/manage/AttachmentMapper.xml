@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="AttachmentMapper" >
+
+  <resultMap id="BaseResultMap" type="Attachment" >
+    <id column="F_ID" property="fId" jdbcType="INTEGER" />
+    <result column="F_NAME" property="fName" jdbcType="VARCHAR" />
+    <result column="F_CONTENT" property="fContent" jdbcType="LONGVARBINARY" />
+  </resultMap>
+  
+  
+  <!-- 查找 list -->
+  <select id="selectAttachmentList" parameterType="pd" resultMap="BaseResultMap">
+   select * from attachment where f_id  in  (${fIds})
+  </select>
+  
+ <select id="selectById" resultMap="BaseResultMap" parameterType="pd">
+  select * from attachment where f_id = #{fId}
+ </select>
+
+
+ <!-- 删除临时附件表 数据 -->
+ <delete id="deleteByIds" parameterType="pd">
+ delete attachment where F_ID in (${fIds})
+ </delete>
+
+<!-- 查询临时附件表的 数据量 -->
+<select id="findCountNum" parameterType="pd" resultType="Integer">
+select count(1) from attachment
+</select>
+
+<!-- 删除临时附件表 数据，只保留 1000条 -->
+<delete id="deleteRetailNum" parameterType="pd">
+ delete from attachment limit #{num}
+</delete>
+
+  <insert id="insert" parameterType="Attachment" useGeneratedKeys="true" keyProperty="fId"> 
+    insert into attachment
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+   
+      <if test="fName != null" >
+        F_NAME,
+      </if>
+      <if test="fContent != null" >
+        F_CONTENT,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+   
+      <if test="fName != null" >
+        #{fName},
+      </if>
+      <if test="fContent != null" >
+        #{fContent},
+      </if>
+    </trim>
+  </insert>
+  
+  
+
+</mapper>

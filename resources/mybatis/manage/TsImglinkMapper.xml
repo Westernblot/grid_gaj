@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TsImglinkMapper" >
+
+  <resultMap id="BaseResultMap" type="TsImglink" >
+    <id column="F_ID" property="fId" jdbcType="INTEGER" />
+    <result column="F_IMG" property="fImg" jdbcType="VARCHAR" />
+    <result column="F_IMG_URL" property="fImgUrl" jdbcType="VARCHAR" />
+    <result column="F_LINK" property="fLink" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from ts_imglink
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByIds" parameterType="pd" >
+    delete from ts_imglink
+    where F_ID in (${fIds})
+  </delete>
+  
+  <select id="selectByPage" parameterType="page" resultMap="BaseResultMap">
+  select * from ts_imglink order by f_id desc
+  </select>
+  
+  <insert id="insert" parameterType="TsImglink" useGeneratedKeys="true" keyProperty="fId">
+    insert into ts_imglink
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+     
+      <if test="fImg != null" >
+        F_IMG,
+      </if>
+      <if test="fImgUrl != null" >
+        F_IMG_URL,
+      </if>
+      <if test="fLink != null" >
+        F_LINK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+   
+      <if test="fImg != null" >
+        #{fImg,jdbcType=VARCHAR},
+      </if>
+      <if test="fImgUrl != null" >
+        #{fImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fLink != null" >
+        #{fLink,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="TsImglink" >
+    update ts_imglink
+    <set >
+      <if test="fImg != null" >
+        F_IMG = #{fImg,jdbcType=VARCHAR},
+      </if>
+      <if test="fImgUrl != null" >
+        F_IMG_URL = #{fImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fLink != null" >
+        F_LINK = #{fLink,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

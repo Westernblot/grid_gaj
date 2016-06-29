@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TsFingerMapper" >
+  <resultMap id="BaseResultMap" type="TsFinger" >
+    <id column="F_ID" property="fId" jdbcType="INTEGER" />
+    <result column="F_CODE" property="fCode" jdbcType="VARCHAR" />
+    <result column="F_TIME" property="fTime" jdbcType="VARCHAR" />
+    <result column="F_YEAR" property="fYear" jdbcType="VARCHAR" />
+    <result column="F_MONTH" property="fMonth" jdbcType="VARCHAR" />
+    <result column="F_DAY" property="fDay" jdbcType="VARCHAR" />
+    <result column="F_WEEK" property="fWeek" jdbcType="VARCHAR" />
+    <result column="F_STATUS" property="fStatus" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from ts_finger
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByIds" parameterType="pd" >
+    delete from ts_finger
+    where F_ID in (${fIds})
+  </delete>
+  
+  <!-- 查询出每月的打卡人员 -->
+  <select id="selectDistinctCodeByMonth" parameterType="pd" resultType="pd">
+  SELECT DISTINCT  F_CODE,
+  (SELECT F_CNAME from sys_user u where f.F_CODE = u.F_UNAME)as F_CNAME ,
+  (SELECT finger_sort from sys_user u where f.F_CODE = u.F_UNAME)as sort
+  from ts_finger f 
+  where f.F_YEAR = #{fYear} and f.F_MONTH = #{fMonth}
+  ORDER BY  sort DESC 
+  </select>
+    
+  <!-- 查询出人员 每月1-31天的 当天打卡记录 -->
+  <select id="selectExcelMonthExport" resultMap="BaseResultMap" parameterType="TsFinger">
+    select * from ts_finger where f_code = #{fCode} and f_time like '%${fTime}%' order by f_time asc
+  </select>
+  
+  <!-- 查询 分页-->
+  <select id="selectByPage" resultType="pd" parameterType="page">
+  SELECT * from 
+  (
+  SELECT f.*,(SELECT f_cname from sys_user u where u.F_UNAME=f.F_CODE ) as F_CNAME from ts_finger f 
+  <where>
+  <if test="pd.fTime !=null and pd.fTime !=''">F_TIME like '${pd.fTime}%'</if>
+  </where>
+   ) AS VIEW
+   order by F_ID desc
+  </select>
+  
+  
+  <!-- 查询 by model -->
+  <select id="selectByModel" resultType="pd" parameterType="TsFinger">
+  SELECT * from 
+  (
+  SELECT f.*,(SELECT f_cname from sys_user u where u.F_UNAME=f.F_CODE ) as F_CNAME from ts_finger f 
+  <where>
+  <if test="fCode !=null and fCode !=''">f_code = #{fCode}</if>
+  <if test="fTime !=null and fTime !=''">and F_TIME like '${fTime}%'</if>
+  </where>
+   ) AS VIEW
+   order by F_TIME asc,F_ID desc 
+  </select>
+  
+  
+  <insert id="insert" parameterType="TsFinger" useGeneratedKeys="true" keyProperty="fId">
+    insert into ts_finger
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      
+      <if test="fCode != null" >
+        F_CODE,
+      </if>
+      <if test="fTime != null" >
+        F_TIME,
+      </if>
+      <if test="fYear != null" >
+        F_YEAR,
+      </if>
+      <if test="fMonth != null" >
+        F_MONTH,
+      </if>
+      <if test="fDay != null" >
+        F_DAY,
+      </if>
+      <if test="fWeek != null" >
+        F_WEEK,
+      </if>
+      <if test="fStatus != null" >
+        F_STATUS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+     
+      <if test="fCode != null" >
+        #{fCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fTime != null" >
+        #{fTime,jdbcType=VARCHAR},
+      </if>
+      <if test="fYear != null" >
+        #{fYear,jdbcType=VARCHAR},
+      </if>
+      <if test="fMonth != null" >
+        #{fMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="fDay != null" >
+        #{fDay,jdbcType=VARCHAR},
+      </if>
+      <if test="fWeek != null" >
+        #{fWeek,jdbcType=VARCHAR},
+      </if>
+      <if test="fStatus != null" >
+        #{fStatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="TsFinger" >
+    update ts_finger
+    <set >
+      <if test="fCode != null" >
+        F_CODE = #{fCode,jdbcType=VARCHAR},
+      </if>
+      <if test="fTime != null" >
+        F_TIME = #{fTime,jdbcType=VARCHAR},
+      </if>
+      <if test="fYear != null" >
+        F_YEAR = #{fYear,jdbcType=VARCHAR},
+      </if>
+      <if test="fMonth != null" >
+        F_MONTH = #{fMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="fDay != null" >
+        F_DAY = #{fDay,jdbcType=VARCHAR},
+      </if>
+      <if test="fWeek != null" >
+        F_WEEK = #{fWeek,jdbcType=VARCHAR},
+      </if>
+      <if test="fStatus != null" >
+        F_STATUS = #{fStatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </update>
+ 
+</mapper>

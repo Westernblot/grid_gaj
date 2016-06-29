@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TsPicMapper" >
+  <resultMap id="BaseResultMap" type="TsPic" >
+    <id column="F_ID" property="fId" jdbcType="INTEGER" />
+    <result column="F_IMG" property="fImg" jdbcType="VARCHAR" />
+    <result column="F_IMG_URL" property="fImgUrl" jdbcType="VARCHAR" />
+    <result column="F_LINK" property="fLink" jdbcType="VARCHAR" />
+    <result column="F_SORT" property="fSort" jdbcType="VARCHAR" />
+    <result column="F_TYPE" property="fType" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from ts_pic
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </select>
+  
+  <!-- 查询图片更换 -->
+  <select id="findPicFiles" resultMap="BaseResultMap" parameterType="pd">
+   select * from ts_pic  where f_type = #{fType}
+    order by f_sort desc,f_id desc  limit 3
+  </select>
+  
+  <!-- 查找图片 by one -->
+  <select id="findPicOne" parameterType="pd" resultType="String">
+   select f_img_url from ts_pic where f_type = #{fType} limit 1
+  </select>
+  
+  <delete id="deleteByIds" parameterType="pd" >
+    delete from ts_pic
+    where F_ID in (${fIds})
+  </delete>
+  
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="page">
+   select * from ts_pic 
+   <where>
+   <if test="pd.fType !=null and pd.fType !=''">f_type = #{pd.fType}</if>
+   </where>
+    order by f_sort desc,f_id desc
+  </select>
+
+  <insert id="insert" parameterType="TsPic" useGeneratedKeys="true" keyProperty="fId" >
+    insert into ts_pic
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+     
+      <if test="fImg != null" >
+        F_IMG,
+      </if>
+      <if test="fImgUrl != null" >
+        F_IMG_URL,
+      </if>
+      <if test="fLink != null" >
+        F_LINK,
+      </if>
+      <if test="fSort != null" >
+        F_SORT,
+      </if>
+      <if test="fType != null" >
+        F_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      
+      <if test="fImg != null" >
+        #{fImg,jdbcType=VARCHAR},
+      </if>
+      <if test="fImgUrl != null" >
+        #{fImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fLink != null" >
+        #{fLink,jdbcType=VARCHAR},
+      </if>
+      <if test="fSort != null" >
+        #{fSort,jdbcType=VARCHAR},
+      </if>
+      <if test="fType != null" >
+        #{fType,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="TsPic" >
+    update ts_pic
+    <set >
+      <if test="fImg != null" >
+        F_IMG = #{fImg,jdbcType=VARCHAR},
+      </if>
+      <if test="fImgUrl != null" >
+        F_IMG_URL = #{fImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fLink != null" >
+        F_LINK = #{fLink,jdbcType=VARCHAR},
+      </if>
+      <if test="fSort != null" >
+        F_SORT = #{fSort,jdbcType=VARCHAR},
+      </if>
+      <if test="fType != null" >
+        F_TYPE = #{fType,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </update>
+ 
+</mapper>

@@ -1,0 +1,96 @@
+@charset "utf-8";
+/*Index CSS Document */
+
+#content{ width:1020px;overflow:hidden;}
+
+#contentRight{float:left;width:230px;height:auto; overflow:hidden; text-align:left;}
+
+#contentRight .index02{margin-bottom:14px; width:228px; height:auto; float:left; overflow:hidden; border:1px solid #DADEE1; background-color:#F5F8FC;}
+#contentRight .index02 ul{ margin:12px 4px 12px 15px;width:200px; height:auto;float:left; display:inline;}
+#contentRight .index02 ul li{width:200px;overflow:hidden;}
+
+.ny_left{ margin-right:9px; width:230px; height:auto; float:left;margin-bottom:14px; overflow:hidden;}
+.ny_left_top{width:228px; height:35px; background:url(../images/ny_left_t.jpg) no-repeat center;
+			  line-height:35px;color:#FFF; font-size:14px; font-weight:bold; text-align:center; border-left:1px solid #DADEE1; border-right:1px solid #DADEE1;}
+.ny_left_con{ padding:5px 0 20px 10px;width:218px;height:auto;float:left; border:1px solid #DADEE1; border-top:0;}
+.ny_left_con li{ margin-top:11px;width:210px; height:31px; float:left; text-align:left; line-height:31px; overflow:hidden;}
+.ny_left_con li a B{margin-right:5px; }
+.ny_left_con li a{width:210px; height:31px; float:left; text-align:left;background:url(../images/ny_left.jpg); text-align:center;} 
+.ny_left_con li a:hover{text-decoration:none;background:url(../images/ny_lefton.jpg);}
+.ny_left_con li a.active{text-decoration:none;background:url(../images/ny_lefton.jpg);}
+
+.ny_right{ padding-bottom:12px; width:776px; height:auto; float:right;overflow:hidden; border:1px solid #C5C5C5;}
+.ny_right .ny_right_top{width:776px; height:33px; line-height:35px; background:url(../images/ypic.jpg) 0 -210px repeat-x;float:left; overflow:hidden;}
+.ny_right .ny_right_top h3{background:url(../images/bot.jpg) no-repeat left center;color:#003785; font-size:14px;text-indent:1em; float:left; margin-left:18px;}
+.ny_right .ny_right_top span{ float:right; margin-right:18px;}
+.ny_right .ny_right_con{ padding:20px 13px;width:750px;min-height:520px; height:auto!important; height:520px; float:left;font-size: 14px; color:#000; line-height: 26px; }
+
+/*新闻列表*/ 
+#content .ny_right_con ul.list{ width:734px; margin-left:6px; height:auto;background:url(../images/ny_right_bg.jpg) repeat; float:left; overflow:hidden;}
+#content .ny_right_con ul.list li{margin-top:1px;width:734px; height:30px;line-height:30px; text-indent:1.8em;background:url(../images/arrow.gif) no-repeat 16px center; float:left; overflow:hidden;}
+#content .ny_right_con ul.list li a{color:#2A2A2A;float:left;font-size:14px;}
+#content .ny_right_con ul.list li a:hover{color:#CD0200;}
+#content .ny_right_con ul.list li:hover{color:#CD0200;}
+#content .ny_right_con ul.list li span{ width:110px; float:right;border-left:2px solid #FFF;font-size:14px;text-indent:0; text-align:center;} 
+
+.page_btm{ width:670px; margin-top:20px; padding:3px; padding-left:10px; float:left; font-size:12px; text-align:right;} 
+
+
+.show h2{ font-size:12px; font-weight:normal; text-align:center; margin:12px 0 20px 0; background-color:#ECE9D5; color:#333;}
+.show p{line-height:26px; margin:10px 5px; }
+.show a{ color:#013785; text-decoration:none; outline:none;}
+.show a:hover{ color:#013785;text-decoration:underline;}
+.show img{ max-width:680px;}
+
+
+.ny_form_top{width:1000px; text-align:left;float:left; overflow:hidden; height:35px; line-height:35px; background:url(../images/conTop_zbg.jpg) repeat-x center bottom; text-align:left; border-bottom:1px solid #FFF; text-indent:2em;}
+.ny_form_top B{ font-size:12px; font-weight:bold;color:#013785;}
+.ny_form{ width:998px;height:auto;float:left; text-align:center; overflow:hidden; border:1px solid #C5C5C5; padding:30px 0;}
+.ny_form table{ margin:0 auto; width:80%;}
+.ny_form table td{ padding:10px;border:1px solid #d1eafc;text-align:left;}
+.ny_form .r12,.red{ color:#F00;}
+.prop input[type="text"],.prop input[type="password"],.prop textarea{ width:75%;}
+
+/*举报中心*/
+.ny_form .table-title{margin:0 auto; width:80%; height:35px; line-height:35px;background:url(../images/ypic.jpg) 0 -126px repeat-x; font-size:14px; font-weight:bold;color:#FFF; text-align:left; text-indent:2em;}
+.ny_form table.input_table{ margin-top:5px; margin-bottom:10px;}
+.ny_form table.input_table td{ border:1px solid #d1eafc;}
+
+
+/*form*/
+.ny_form label{ display:block; margin:16px 0; line-height:28px; padding:0;}
+.ny_form input,textarea{vertical-align: middle; margin:0 7px;color: #333333;padding:0 2px;-border-radius:3px;-moz-border-radius:3px; -webkit-border-radius:3px;}
+.ny_form input[type="text"],input[type="password"],textarea{border: 1px solid #C5C5C5;vertical-align: middle;padding:4px 10px; background:transparent;}
+.ny_form input[type="text"]:focus,input[type="password"]:focus,textarea:focus { border-color: #00A0FE; }
+.ny_form input[type="text"][disabled] {border: 1px solid #C5C5C5;olor:#000;}
+.ny_form select{ margin:0 7px;margin-right:3px;vertical-align: middle;}
+.ny_form option { /*color: #0081CE;*/ color: #000; }
+.ny_form textarea {line-height:21px;}
+.ny_form textarea[disabled],textarea[readonly] {border-color:#ccc;background-image:none;}
+.ny_form input[type="image"] {padding: 0;margin: 0;border: none;}
+.ny_form input[type="file"] {*height:21px;margin: 0;}
+.ny_form input[type="checkbox"] { margin:0 7px;}
+.ny_form input[type="radio"] { margin: 1px 3px 0 0; *margin: -2px 0 -1px -2px;}
+
+.ny_form input.checkbox{padding:4px; background:none; border:1px solid #C5C5C5;}
+
+.ny_form .button{ display:inline-block; margin:6px;padding:2px 0;-border-radius:3px;-moz-border-radius:3px; -webkit-border-radius:3px; cursor:pointer; text-align:center;width:200px; height:30px; font-size:16px;background-color:#0C5CAB;border:1px solid #013785; color:#FFF;}
+
+.ny_form .nobutton{ display:inline-block; margin:6px;padding:2px 0;-border-radius:3px;-moz-border-radius:3px; -webkit-border-radius:3px; cursor:pointer; text-align:center;width:200px; height:30px; font-size:16px;background-color:#FFF;border:1px solid #013785; color:#013785;}
+
+
+.ny_form .photonews-list{list-style: none; width: 970px; padding:20px 0 20px 28px;}
+.ny_form .photonews-list li{ width:180px;float: left; margin:10px 30px; }
+.ny_form .photonews-list li .photo{ width:180px}
+.ny_form .photonews-list li .photo img{ width:180px; height:120px}
+.ny_form .photonews-list li .title{ width:180px; height:30px; line-height:30px;text-align:center;}
+.ny_form .photonews-list li .title a{ font-size:14px;}
+
+
+.wsdc{ text-align:center; line-height:26px; margin:10px 0; padding:10px; float:left; width:680px;border:1px solid #C5C5C5;}
+.wsdc B{ background-color:#EEEEEE; display:block; width:100%; text-indent:1em;text-align:left; }
+.wsdc label{ padding-top:5px; border-bottom:1px solid #EEEEEE; display:block; text-indent:2em; text-align:left;}
+.button{ margin:10px auto;}
+
+.field2 { display:inline-block;}
+.field2 span {border:1px #666 solid; display:inline-block;overflow:hidden; width:10px; height:10px; cursor:pointer;}

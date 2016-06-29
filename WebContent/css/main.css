@@ -1,0 +1,73 @@
+﻿@charset "utf-8";
+/* CSS Document */
+
+*{ margin:0; padding:0; }
+body{font-size:12px; line-height:21px; color:#333333; text-align:center; font-family:"宋体",Arial;background:url(../images/bg1.gif) center top repeat-y #EDEDED;}
+ul,li{ list-style-type:none; margin:0; padding:0;}
+img{ border:0; margin:0; padding:0;}
+a{ color:#001144; text-decoration:none; outline:none;}
+a:hover{ color:#CD0200;text-decoration:underline;}
+
+hr{ height:3px; width:auto; border:0; background:none;border-bottom:#B6B6BA 1px dotted;}
+table{border-collapse:collapse;font-size:12px;}
+.left{ float:left;}
+.right{ float:right;}
+.clear{ clear:both;}
+em{ font-style:normal;}
+
+#container{ width:1020px; margin:0 auto;background-color:#FFF;}
+#head{ height:318px; width:1020px;padding-bottom:14px; float:left;}
+#content{ height:auto; width:1020px; text-align:left; float:left; overflow:hidden;}
+#foot{ margin-top:14px;padding-top:11px;width:1020px; height:82px; border-top:2px solid #0756B9;line-height:23px; text-align:center;float:left;background:url(../images/footbg.jpg) center no-repeat #F5F8FC; }
+
+
+#link{width:1020px;border:1px solid #E1E1E1;float:left;}
+.link_c{padding:3px 20px; line-height:23px;width:978px; height:auto;float:left; border:1px solid #FFF; background-color:#F6F6F6;text-align:center;}
+.link_c B{font-size:13px; float:left; color:#CD0200;}
+.link_c li{font-size:13px; padding:0 16px 0 12px;float:left;white-space:nowrap;}
+
+
+#head .top{ width:1020px; height:199px; display:block;}
+
+#head .nav{width:1020px;height:48px;display:block;background:url(../images/ypic.jpg) 0 -161px repeat-x;}
+#head .nav ul{ width:1020px;height:48px; float:left;line-height:48px;background:url(../images/nav_r.jpg) no-repeat right center;}
+#head .nav .nav_left{ width:60px; padding-left:20px;background:url(../images/nav_l.jpg) no-repeat left center;}
+#head .nav ul li{ float:left; width:92px;}
+#head .nav ul li a{ color:#FFF;font-size:14px; font-weight:bold;}    
+#head .nav ul li a:hover {color:#FDFB02; text-decoration:none;} 
+#head .nav ul li.sub a{font-size:14px;color:#FDFB02;}
+
+
+.navbottom ul{width:650px;height:34px; overflow:hidden;float:left; margin:0 5px 0 13px; }
+.navbottom ul li{ white-space:nowrap; padding:0 11px 0 10px;float:left;background:url(../images/line.gif) no-repeat right center;}
+.navbottom ul li.none{ background:none;}
+.navbottom ul li a{text-indent:0.6em; float:left;}
+
+.navbottom .search{ margin-top:4px;width:auto; float:right;}
+input.inputText{ margin-right:2px;width:120px; height:23px; line-height:23px; border:1px solid #CCCCCC; background-color:#FFF;}
+
+.navbottom{width:1018px;height:34px; line-height:34px; border:1px solid #CECECE; float:left;}
+.navbottom B{ float:left; margin:0 5px 0 30px;color:#0048AA;}
+.navbottom .box{width:680px;height:34px; overflow:hidden;float:left; }
+.navbottom .box .stroll{overflow: hidden; width: 680px;}
+.navbottom .box .stroll .photonews-list{margin: 0px; padding: 0px; list-style: none; width:680px;}
+.navbottom .box ul li{ white-space:nowrap; background:none;}
+.navbottom .box ul li a{background:url(../images/arrow.gif) no-repeat left center;text-indent:0.6em; float:left; margin:0 6px; color:#0048AA;}
+.nbNone{ border-top:0; border-bottom:0;height:33px;background:url(../images/ypic.jpg) 0 -54px repeat-x;}
+
+.navbottom .tgzx{ margin:3px 10px 0 14px; width:auto; float:right;}
+.navbottom .tgzx a{  width:79px; height:25px; line-height:25px; float:left; color:#FFF;  border:1px solid #CECECE;background:url(../images/ypic.jpg) 0 -27px repeat-x;}
+.navbottom .tgzx a:hover{text-decoration:none;}
+
+
+
+/*侧边栏目*/
+
+#contentRight .r_Top{height:34px; background:url(../images/ypic.jpg) 0 -90px repeat-x;overflow:hidden; border-bottom:1px solid #D1D1D1;}
+#contentRight .r_Top em{background:url(../images/rTop_l.jpg) top no-repeat;float:left; width:2px; height:38px;}
+#contentRight .r_Top h4{ text-indent:1em; width:auto;height:34px; line-height:34px; font-size:14px;color:#003785; text-align:left;float:left;}
+#contentRight .r_Top a{ padding-right:16px;height:34px; line-height:34px;float:right; color:#333;background:url(../images/rTop_r.jpg) right top no-repeat;}
+#contentRight .r_Top a:hover{ color:#333; text-decoration:none;}
+#contentRight .r_Top a.jy{ padding-right:0; margin-right:6px; color:#105AB9;background:none;}
+
+#div_attachment{ margin:20px 40px;}

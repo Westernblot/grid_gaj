@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TsLinkMapper" >
+  <resultMap id="BaseResultMap" type="TsLink" >
+    <id column="F_ID" property="fId" jdbcType="INTEGER" />
+    <result column="F_NAME" property="fName" jdbcType="VARCHAR" />
+    <result column="F_URL" property="fUrl" jdbcType="VARCHAR" />
+    <result column="F_TYPE" property="fType" jdbcType="VARCHAR" />
+    <result column="F_IMG" property="fImg" jdbcType="VARCHAR" />
+    <result column="F_IMG_URL" property="fImgUrl" jdbcType="VARCHAR" />
+  </resultMap>
+ 
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from ts_link
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByIds" parameterType="pd" >
+    delete from ts_link
+    where F_ID in (${fIds})
+  </delete>
+  
+  <select id="selectByModel" resultMap="BaseResultMap" parameterType="TsLink">
+   select * from ts_link
+   <where>
+    <if test="fType !=null and  fType !=''">
+    f_type = #{fType}
+    </if>
+   </where>
+  </select>
+  
+  <insert id="insert" parameterType="TsLink" >
+    insert into ts_link
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+     
+      <if test="fName != null" >
+        F_NAME,
+      </if>
+      <if test="fUrl != null" >
+        F_URL,
+      </if>
+      <if test="fType != null" >
+        F_TYPE,
+      </if>
+      <if test="fImg != null" >
+        F_IMG,
+      </if>
+      <if test="fImgUrl != null" >
+        F_IMG_URL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+    
+      <if test="fName != null" >
+        #{fName,jdbcType=VARCHAR},
+      </if>
+      <if test="fUrl != null" >
+        #{fUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fType != null" >
+        #{fType,jdbcType=VARCHAR},
+      </if>
+      <if test="fImg != null" >
+        #{fImg,jdbcType=VARCHAR},
+      </if>
+      <if test="fImgUrl != null" >
+        #{fImgUrl,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="update" parameterType="TsLink" >
+    update ts_link
+    <set >
+      <if test="fName != null" >
+        F_NAME = #{fName,jdbcType=VARCHAR},
+      </if>
+      <if test="fUrl != null" >
+        F_URL = #{fUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fType != null" >
+        F_TYPE = #{fType,jdbcType=VARCHAR},
+      </if>
+      <if test="fImg != null" >
+        F_IMG = #{fImg,jdbcType=VARCHAR},
+      </if>
+      <if test="fImgUrl != null" >
+        F_IMG_URL = #{fImgUrl,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </update>
+  
+</mapper>

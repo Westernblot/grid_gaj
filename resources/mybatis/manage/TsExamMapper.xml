@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TsExamMapper" >
+  <resultMap id="BaseResultMap" type="TsExam" >
+    <id column="F_ID" property="fId" jdbcType="INTEGER" />
+    <result column="F_NAME" property="fName" jdbcType="VARCHAR" />
+    <result column="F_DATE" property="fDate" jdbcType="VARCHAR" />
+    <result column="F_ITEM_ID" property="fItemId" jdbcType="INTEGER" />
+    <result column="F_ADD" property="fAdd" jdbcType="VARCHAR" />
+    <result column="F_SUB" property="fSub" jdbcType="VARCHAR" />
+    <result column="F_REMARK" property="fRemark" jdbcType="VARCHAR" />
+    <result column="F_YEAR" property="fYear" jdbcType="VARCHAR" />
+    <result column="F_MONTH" property="fMonth" jdbcType="VARCHAR" />
+    <result column="F_END_MONTH" property="fEndMonth" jdbcType="VARCHAR" />
+  </resultMap>
+  
+  
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from ts_exam
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByIds" parameterType="pd" >
+    delete from ts_exam
+    where F_ID in (${fIds})
+  </delete>
+  
+  
+  <!-- 分页查询 -->
+  <select id="selectByPage" resultType="pd" parameterType="page">
+  select * ,(SELECT F_ITEM FROM ts_item t where t.f_id =e.F_ITEM_ID) as F_ITEM  from ts_exam  e 
+  <where>
+  <if test="pd.fName != null and pd.fName !=''">F_Name = #{pd.fName}</if>
+  <if test="pd.fMonth != null and pd.fMonth !=''">AND F_MONTH >= #{pd.fMonth}</if>
+  <if test="pd.fEndMonth != null and pd.fEndMonth !=''">AND #{pd.fEndMonth} >= F_END_MONTH</if>
+  </where>
+   order by F_NAME desc,F_MONTH DESC, F_ID  desc
+  </select>
+  
+  
+  <!-- 数据导出查询 -->
+  <select id="selectByPageData" resultType="pd" parameterType="pd">
+  select * ,(SELECT F_ITEM FROM ts_item t where t.f_id =e.F_ITEM_ID) as F_ITEM  from ts_exam  e 
+  <where>
+  <if test="fName !=null and fName !=''">F_Name = #{fName}</if>
+  <if test="fMonth != null and fMonth !=''">AND F_MONTH >= #{fMonth}</if>
+  <if test="fEndMonth != null and fEndMonth !=''">AND #{fEndMonth} >= F_END_MONTH</if>
+  </where>
+   order by F_NAME desc,F_MONTH DESC, F_ID  desc
+  </select>
+
+  <insert id="insert" parameterType="TsExam" useGeneratedKeys="true"  keyProperty="fId">
+    insert into ts_exam
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      
+      <if test="fName != null" >
+        F_NAME,
+      </if>
+      <if test="fDate != null" >
+        F_DATE,
+      </if>
+      <if test="fItemId != null" >
+        F_ITEM_ID,
+      </if>
+      <if test="fAdd != null" >
+        F_ADD,
+      </if>
+      <if test="fSub != null" >
+        F_SUB,
+      </if>
+      <if test="fRemark != null" >
+        F_REMARK,
+      </if>
+      <if test="fYear != null" >
+        F_YEAR,
+      </if>
+      <if test="fMonth != null" >
+        F_MONTH,
+      </if>
+      <if test="fEndMonth != null" >
+        F_END_MONTH,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+     
+      <if test="fName != null" >
+        #{fName,jdbcType=VARCHAR},
+      </if>
+      <if test="fDate != null" >
+        #{fDate,jdbcType=VARCHAR},
+      </if>
+      <if test="fItemId != null" >
+        #{fItemId,jdbcType=INTEGER},
+      </if>
+      <if test="fAdd != null" >
+        #{fAdd,jdbcType=VARCHAR},
+      </if>
+      <if test="fSub != null" >
+        #{fSub,jdbcType=VARCHAR},
+      </if>
+      <if test="fRemark != null" >
+        #{fRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="fYear != null" >
+        #{fYear,jdbcType=VARCHAR},
+      </if>
+      <if test="fMonth != null" >
+        #{fMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="fEndMonth != null" >
+        #{fEndMonth,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="TsExam" >
+    update ts_exam
+    <set >
+      <if test="fName != null" >
+        F_NAME = #{fName,jdbcType=VARCHAR},
+      </if>
+      <if test="fDate != null" >
+        F_DATE = #{fDate,jdbcType=VARCHAR},
+      </if>
+      <if test="fItemId != null" >
+        F_ITEM_ID = #{fItemId,jdbcType=INTEGER},
+      </if>
+      <if test="fAdd != null" >
+        F_ADD = #{fAdd,jdbcType=VARCHAR},
+      </if>
+      <if test="fSub != null" >
+        F_SUB = #{fSub,jdbcType=VARCHAR},
+      </if>
+      <if test="fRemark != null" >
+        F_REMARK = #{fRemark,jdbcType=VARCHAR},
+      </if>
+      <if test="fYear != null" >
+        F_YEAR = #{fYear,jdbcType=VARCHAR},
+      </if>
+      <if test="fMonth != null" >
+        F_MONTH = #{fMonth,jdbcType=VARCHAR},
+      </if>
+      <if test="fEndMonth != null" >
+        F_END_MONTH = #{fEndMonth,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </update>
+ 
+</mapper>

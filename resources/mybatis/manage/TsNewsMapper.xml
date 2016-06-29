@@ -1,0 +1,520 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="TsNewsMapper" >
+  <resultMap id="BaseResultMap" type="TsNews" >
+    <id column="F_ID" property="fId" jdbcType="INTEGER" />
+    <result column="F_ADD_ID" property="fAddId" jdbcType="INTEGER" />
+    <result column="F_ADD_NAME" property="fAddName" jdbcType="VARCHAR" />
+    <result column="F_ADD_DATE" property="fAddDate" jdbcType="VARCHAR" />
+    <result column="F_SOURCE" property="fSource" jdbcType="VARCHAR" />
+    <result column="F_READ" property="fRead" jdbcType="INTEGER" />
+    <result column="F_SUBJECT" property="fSubject" jdbcType="VARCHAR" />
+    <result column="F_ATTACHMENT" property="fAttachment" jdbcType="VARCHAR" />
+    <result column="F_ATTACHMENT_URL" property="fAttachmentUrl" jdbcType="VARCHAR" />
+    <result column="F_DATE" property="fDate" jdbcType="VARCHAR" />
+    <result column="F_GROUP" property="fGroup" jdbcType="VARCHAR" />
+    <result column="F_CONTENT" property="fContent" jdbcType="VARCHAR" />
+    <result column="F_IMG" property="fImg" jdbcType="VARCHAR" />
+    <result column="F_IMG_URL" property="fImgUrl" jdbcType="VARCHAR" />
+    <result column="F_PART" property="fPart" jdbcType="VARCHAR" />
+    <result column="F_SORT" property="fSort" jdbcType="INTEGER" />
+    <result column="F_SUMMARY" property="fSummary" jdbcType="VARCHAR" />
+    <result column="F_SUBHEAD" property="fSubhead" jdbcType="VARCHAR" />
+    <result column="F_ATTENTION" property="fAttention" jdbcType="VARCHAR" />
+    <result column="F_IMPORTANT" property="fImportant" jdbcType="VARCHAR" />
+    <result column="F_RECOMMEND" property="fRecommend" jdbcType="VARCHAR" />
+    <result column="F_SCOPE" property="fScope" jdbcType="VARCHAR" />
+    <result column="F_STATUS" property="fStatus" jdbcType="VARCHAR" />
+    <result column="F_ADD_DEPT" property="fAddDept" jdbcType="VARCHAR" />
+    <result column="F_SUB_GROUP" property="fSubGroup" jdbcType="VARCHAR" />
+    <result column="F_REC_DEPT" property="fRecDept" jdbcType="VARCHAR" />
+    <result column="F_SIGN_DEPT" property="fSignDept" jdbcType="VARCHAR" />
+    <result column="F_COPY" property="fCopy" jdbcType="VARCHAR" />
+    <result column="F_SIGN" property="fSign" jdbcType="VARCHAR" />
+    <result column="F_CHECK_DRAFT" property="fCheckDraft" jdbcType="VARCHAR" />
+    <result column="F_UNDERTAKER" property="fUndertaker" jdbcType="VARCHAR" />
+    <result column="F_RED" property="fRed" jdbcType="VARCHAR" />
+    <result column="F_LINK" property="fLink" jdbcType="VARCHAR" />
+    <result column="F_TOP" property="fTop" jdbcType="VARCHAR" />
+  </resultMap>
+    
+  <!-- 查询分组后，前10条的数据 -->
+  <select id="findTopOrderByfGroup" resultMap="BaseResultMap" parameterType="pd">
+    select a.F_ID,a.F_SUBJECT,a.F_DATE,a.F_IMG,a.F_IMG_URL,a.F_PART,a.F_GROUP,a.F_SUMMARY,a.F_SORT,a.F_RED,a.F_READ,a.F_LINK
+    from ts_news a 
+    <where>
+    10 > (select count(*) from ts_news where F_GROUP = a.F_GROUP and F_ID > a.F_ID  )
+    <if test="fStatus !=null and fStatus !=''">and  a.f_status=#{fStatus}</if>    
+    </where>
+    order by a.F_TOP desc, a.F_DATE desc,a.F_GROUP desc, a.F_SORT DESC , a.F_ID DESC
+  </select>
+  
+  <!-- 查找最大排序号 -->
+  <select id="selectMaxNumber" resultType="Integer">
+    SELECT MAX(f_sort)+1 as maxNumber from ts_news
+  </select>
+  
+  <!-- 获取今日关注、要闻排行、编辑推荐 -->
+  <!-- <select id="selectDataLimit" parameterType="pd" resultMap="BaseResultMap">
+  select F_ID,F_SUBJECT, F_GROUP,F_SORT,F_SUB_GROUP,F_READ
+  from ts_news
+   <where>
+   <if test="fAttention !=null and fAttention !=''">
+    and f_attention = #{fAttention}
+   </if>
+   <if test="fImportant !=null and fImportant !=''">
+    and f_important = #{fImportant}
+   </if>
+   <if test="fRecommend !=null and fRecommend !=''">
+    and f_recommend = #{fRecommend}
+   </if>
+   <if test="fStatus !=null and fStatus !=''">
+    and f_status = #{fStatus}
+   </if>
+   </where>
+   order by F_DATE DESC,F_SORT DESC ,F_ID DESC LIMIT #{number}
+  </select>
+   -->
+  
+  <!-- ==============================首页准备数据 start==================================== -->
+  
+  <!-- 分类 distinct 查找 -->
+<!--   <select id="selectDistinctfGroup" resultType="pd"  >
+  SELECT DISTINCT F_NAME from ts_group 
+  </select>
+  
+  <select id="findTopGroup10" parameterType="pd" resultMap="BaseResultMap">
+   SELECT 
+    F_ID,F_SUBJECT,F_DATE,F_IMG,F_IMG_URL,#{fGroup} as F_GROUP,F_SUMMARY,F_SORT,F_SUB_GROUP,F_READ,F_LINK
+    from ts_news where F_STATUS ='审核通过' AND instr(F_GROUP,#{fGroup})>0
+    order by F_DATE DESC, F_SORT DESC , F_ID DESC  LIMIT 10
+  </select> -->
+ 
+  <!-- ==============================首页准备数据 end =================================== -->
+
+  <select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select * from ts_news
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </select>
+  
+  <delete id="deleteByIds" parameterType="pd" >
+    delete from ts_news
+    where F_ID in (${fIds})
+  </delete>
+  
+  <!-- 前台查找 -->
+  <select id="selectByPage" resultMap="BaseResultMap" parameterType="page">
+   select * from ts_news
+   <where>
+   <if test="pd.fSubject !=null and pd.fSubject !=''">
+    f_subject like '%${pd.fSubject}%'
+   </if>
+   <if test="pd.fGroup !=null and pd.fGroup !=''">
+    and f_group like '%${pd.fGroup}%'
+   </if>
+   <if test="pd.fAttention !=null and pd.fAttention !=''">
+    and f_attention = #{pd.fAttention}
+   </if>
+   <if test="pd.fImportant !=null and pd.fImportant !=''">
+    and f_important = #{pd.fImportant}
+   </if>
+   <if test="pd.fRecommend !=null and pd.fRecommend !=''">
+    and f_recommend = #{pd.fRecommend}
+   </if>
+   <if test="pd.fStatus !=null and pd.fStatus !=''">
+    and f_status = #{pd.fStatus}
+   </if>
+   <if test="pd.fSubGroup !=null and pd.fSubGroup !=''">
+    and f_sub_group = #{pd.fSubGroup}
+   </if>
+   </where>
+   order by f_top desc,F_DATE DESC,F_SORT DESC ,F_ID DESC
+  </select>
+  
+  <!-- 后台文章管理分页 -->
+  <select id="manageSelectByPage" resultMap="BaseResultMap" parameterType="page">
+   select * from ts_news
+   <where>
+   <if test="pd.fGroup !=null and pd.fGroup !='' and  pd.fSubGroup !=null and pd.fSubGroup !=''">
+    f_sub_group = #{pd.fSubGroup}  and  f_group like  '%${pd.fGroup}%'
+   </if>
+   <if test="pd.fGroup !=null and pd.fGroup !='' and ( pd.fSubGroup ==null or pd.fSubGroup =='')">
+   and f_group = #{pd.fGroup} 
+   </if>
+   <if test="pd.fStatus !=null and pd.fStatus !=''">
+    and f_status = #{pd.fStatus}
+   </if>
+   </where>
+   order by f_top desc,F_DATE DESC, F_SORT DESC ,F_ID DESC
+  </select>
+  
+  <insert id="insert" parameterType="TsNews" >
+    insert into ts_news
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="fAddId != null" >
+        F_ADD_ID,
+      </if>
+      <if test="fAddName != null" >
+        F_ADD_NAME,
+      </if>
+      <if test="fAddDate != null" >
+        F_ADD_DATE,
+      </if>
+      <if test="fSource != null" >
+        F_SOURCE,
+      </if>
+      <if test="fRead != null" >
+        F_READ,
+      </if>
+      <if test="fSubject != null" >
+        F_SUBJECT,
+      </if>
+      <if test="fAttachment != null" >
+        F_ATTACHMENT,
+      </if>
+      <if test="fAttachmentUrl != null" >
+        F_ATTACHMENT_URL,
+      </if>
+      <if test="fDate != null" >
+        F_DATE,
+      </if>
+      <if test="fGroup != null" >
+        F_GROUP,
+      </if>
+      <if test="fContent != null" >
+        F_CONTENT,
+      </if>
+      <if test="fImg != null" >
+        F_IMG,
+      </if>
+      <if test="fImgUrl != null" >
+        F_IMG_URL,
+      </if>
+      <if test="fPart != null" >
+        F_PART,
+      </if>
+      <if test="fSort != null" >
+        F_SORT,
+      </if>
+      <if test="fSummary != null" >
+        F_SUMMARY,
+      </if>
+      <if test="fSubhead != null" >
+        F_SUBHEAD,
+      </if>
+      <if test="fAttention != null" >
+        F_ATTENTION,
+      </if>
+      <if test="fImportant != null" >
+        F_IMPORTANT,
+      </if>
+      <if test="fRecommend != null" >
+        F_RECOMMEND,
+      </if>
+      <if test="fScope != null" >
+        F_SCOPE,
+      </if>
+      <if test="fStatus != null" >
+        F_STATUS,
+      </if>
+      <if test="fAddDept != null" >
+        F_ADD_DEPT,
+      </if>
+      <if test="fSubGroup != null" >
+        F_SUB_GROUP,
+      </if>
+      <if test="fRecDept != null" >
+        F_REC_DEPT,
+      </if>
+      <if test="fSignDept != null" >
+        F_SIGN_DEPT,
+      </if>
+      <if test="fCopy != null" >
+        F_COPY,
+      </if>
+      <if test="fSign != null" >
+        F_SIGN,
+      </if>
+      <if test="fCheckDraft != null" >
+        F_CHECK_DRAFT,
+      </if>
+      <if test="fUndertaker != null" >
+        F_UNDERTAKER,
+      </if>
+      <if test="fRed != null" >
+        F_RED,
+      </if>
+      <if test="fLink != null" >
+        F_LINK,
+      </if>
+      <if test="fTop != null" >
+        F_TOP,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="fAddId != null" >
+        #{fAddId,jdbcType=INTEGER},
+      </if>
+      <if test="fAddName != null" >
+        #{fAddName,jdbcType=VARCHAR},
+      </if>
+      <if test="fAddDate != null" >
+        #{fAddDate,jdbcType=VARCHAR},
+      </if>
+      <if test="fSource != null" >
+        #{fSource,jdbcType=VARCHAR},
+      </if>
+      <if test="fRead != null" >
+        #{fRead,jdbcType=INTEGER},
+      </if>
+      <if test="fSubject != null" >
+        #{fSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="fAttachment != null" >
+        #{fAttachment,jdbcType=VARCHAR},
+      </if>
+      <if test="fAttachmentUrl != null" >
+        #{fAttachmentUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fDate != null" >
+        #{fDate,jdbcType=VARCHAR},
+      </if>
+      <if test="fGroup != null" >
+        #{fGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="fContent != null" >
+        #{fContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fImg != null" >
+        #{fImg,jdbcType=VARCHAR},
+      </if>
+      <if test="fImgUrl != null" >
+        #{fImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fPart != null" >
+        #{fPart,jdbcType=VARCHAR},
+      </if>
+      <if test="fSort != null" >
+        #{fSort,jdbcType=INTEGER},
+      </if>
+      <if test="fSummary != null" >
+        #{fSummary,jdbcType=VARCHAR},
+      </if>
+      <if test="fSubhead != null" >
+        #{fSubhead,jdbcType=VARCHAR},
+      </if>
+      <if test="fAttention != null" >
+        #{fAttention,jdbcType=VARCHAR},
+      </if>
+      <if test="fImportant != null" >
+        #{fImportant,jdbcType=VARCHAR},
+      </if>
+      <if test="fRecommend != null" >
+        #{fRecommend,jdbcType=VARCHAR},
+      </if>
+      <if test="fScope != null" >
+        #{fScope,jdbcType=VARCHAR},
+      </if>
+      <if test="fStatus != null" >
+        #{fStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="fAddDept != null" >
+        #{fAddDept,jdbcType=VARCHAR},
+      </if>
+      <if test="fSubGroup != null" >
+        #{fSubGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="fRecDept != null" >
+        #{fRecDept,jdbcType=VARCHAR},
+      </if>
+      <if test="fSignDept != null" >
+        #{fSignDept,jdbcType=VARCHAR},
+      </if>
+      <if test="fCopy != null" >
+        #{fCopy,jdbcType=VARCHAR},
+      </if>
+      <if test="fSign != null" >
+        #{fSign,jdbcType=VARCHAR},
+      </if>
+      <if test="fCheckDraft != null" >
+        #{fCheckDraft,jdbcType=VARCHAR},
+      </if>
+      <if test="fUndertaker != null" >
+        #{fUndertaker,jdbcType=VARCHAR},
+      </if>
+      <if test="fRed != null" >
+        #{fRed,jdbcType=VARCHAR},
+      </if>
+      <if test="fLink != null" >
+        #{fLink,jdbcType=VARCHAR},
+      </if>
+      <if test="fTop != null" >
+        #{fTop,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+  <update id="update" parameterType="TsNews" >
+    update ts_news
+    <set >
+      <if test="fAddId != null" >
+        F_ADD_ID = #{fAddId,jdbcType=INTEGER},
+      </if>
+      <if test="fAddName != null" >
+        F_ADD_NAME = #{fAddName,jdbcType=VARCHAR},
+      </if>
+      <if test="fAddDate != null" >
+        F_ADD_DATE = #{fAddDate,jdbcType=VARCHAR},
+      </if>
+      <if test="fSource != null" >
+        F_SOURCE = #{fSource,jdbcType=VARCHAR},
+      </if>
+      <if test="fRead != null" >
+        F_READ = #{fRead,jdbcType=INTEGER},
+      </if>
+      <if test="fSubject != null" >
+        F_SUBJECT = #{fSubject,jdbcType=VARCHAR},
+      </if>
+      <if test="fAttachment != null" >
+        F_ATTACHMENT = #{fAttachment,jdbcType=VARCHAR},
+      </if>
+      <if test="fAttachmentUrl != null" >
+        F_ATTACHMENT_URL = #{fAttachmentUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fDate != null" >
+        F_DATE = #{fDate,jdbcType=VARCHAR},
+      </if>
+      <if test="fGroup != null" >
+        F_GROUP = #{fGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="fContent != null" >
+        F_CONTENT = #{fContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="fImg != null" >
+        F_IMG = #{fImg,jdbcType=VARCHAR},
+      </if>
+      <if test="fImgUrl != null" >
+        F_IMG_URL = #{fImgUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="fPart != null" >
+        F_PART = #{fPart,jdbcType=VARCHAR},
+      </if>
+      <if test="fSort != null" >
+        F_SORT = #{fSort,jdbcType=INTEGER},
+      </if>
+      <if test="fSummary != null" >
+        F_SUMMARY = #{fSummary,jdbcType=VARCHAR},
+      </if>
+      <if test="fSubhead != null" >
+        F_SUBHEAD = #{fSubhead,jdbcType=VARCHAR},
+      </if>
+      <if test="fAttention != null" >
+        F_ATTENTION = #{fAttention,jdbcType=VARCHAR},
+      </if>
+      <if test="fImportant != null" >
+        F_IMPORTANT = #{fImportant,jdbcType=VARCHAR},
+      </if>
+      <if test="fRecommend != null" >
+        F_RECOMMEND = #{fRecommend,jdbcType=VARCHAR},
+      </if>
+      <if test="fScope != null" >
+        F_SCOPE = #{fScope,jdbcType=VARCHAR},
+      </if>
+      <if test="fStatus != null" >
+        F_STATUS = #{fStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="fAddDept != null" >
+        F_ADD_DEPT = #{fAddDept,jdbcType=VARCHAR},
+      </if>
+      <if test="fSubGroup != null" >
+        F_SUB_GROUP = #{fSubGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="fRecDept != null" >
+        F_REC_DEPT = #{fRecDept,jdbcType=VARCHAR},
+      </if>
+      <if test="fSignDept != null" >
+        F_SIGN_DEPT = #{fSignDept,jdbcType=VARCHAR},
+      </if>
+      <if test="fCopy != null" >
+        F_COPY = #{fCopy,jdbcType=VARCHAR},
+      </if>
+      <if test="fSign != null" >
+        F_SIGN = #{fSign,jdbcType=VARCHAR},
+      </if>
+      <if test="fCheckDraft != null" >
+        F_CHECK_DRAFT = #{fCheckDraft,jdbcType=VARCHAR},
+      </if>
+      <if test="fUndertaker != null" >
+        F_UNDERTAKER = #{fUndertaker,jdbcType=VARCHAR},
+      </if>
+      <if test="fRed != null" >
+        F_RED = #{fRed,jdbcType=VARCHAR},
+      </if>
+      <if test="fLink != null" >
+        F_LINK = #{fLink,jdbcType=VARCHAR},
+      </if>
+      <if test="fTop != null" >
+        F_TOP = #{fTop,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where F_ID = #{fId,jdbcType=INTEGER}
+  </update>
+  
+  <!-- 查找栏目下的子栏目 -->
+  <select id="selectSubList" parameterType="pd" resultType="pd">
+  select F_NAME from sys_menu where
+   F_PID =
+  (SELECT F_ID FROM sys_menu WHERE F_NAME = #{fName})
+  </select>
+  
+  
+  <!-- ==================================分割线========================================================== -->
+  
+  <!-- 分页查询专项工作、中心工作下的栏目新闻 -->
+  <select id="selectTopicsNewsByPage" resultMap="BaseResultMap" parameterType="page">
+  SELECT * from ts_news where F_GROUP in (select F_NAME from ts_group where f_type= #{pd.fType})
+   ORDER BY f_top desc,F_DATE DESC,F_SORT DESC,F_ID DESC
+  </select>
+  
+  
+  <!-- 查询信息排行的数据 -->
+  <select id="selectTopNewsList" parameterType="pd" resultMap="BaseResultMap">
+  select * from ts_news 
+  <where>
+   <if test="fStatus !=null and fStatus !=''">f_status = #{fStatus}</if>
+  </where>
+  order by f_top desc, F_DATE DESC,F_SORT DESC,F_ID DESC  limit 11
+  </select>
+  
+  <!-- 滚动新闻 前5个 -->
+  <select id="findLoopNewsList" resultMap="BaseResultMap" parameterType="pd">
+   select * FROM ts_news
+    <where>
+   F_GROUP='治安要闻' and F_IMG !=''
+   <if test="fStatus !=null and fStatus !=''">and f_status = #{fStatus}</if>
+   </where> 
+    ORDER BY f_top desc, F_DATE DESC,F_SORT DESC,F_ID DESC LIMIT 5
+  </select>
+  
+  
+  <!-- 判断是否已经签核 -->
+  <select id="checkSign" parameterType="pd" resultType="int">
+  SELECT COUNT(1) from ts_news where F_ID = #{fId} and F_SIGN_DEPT like '%${fDept}%'
+  </select>
+  
+  <!-- 签核文件 -->
+  <update id="signNews" parameterType="pd">
+  update ts_news set f_sign_dept = CONCAT(F_SIGN_DEPT,',',#{fDept})  where f_id = #{fId}
+  </update>
+  
+  <!-- 批量审核修改 -->
+  <update id="batchAuditUpdate" parameterType="pd">
+  update ts_news set f_status = #{fStatus}  where f_id in (${fIds})
+  </update>
+  
+  <!-- 点击查看阅读次数加1 -->
+  <update id="addnewsfRead" parameterType="pd">
+   update ts_news set f_read = f_read +1  where f_id = #{fId}
+  </update>
+  
+</mapper>
